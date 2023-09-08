@@ -1,0 +1,23 @@
+on: [push]
+jobs:
+  test:
+    runs-on: docker
+    container:
+      image: catthehacker/ubuntu:act-latest
+      options: --privileged
+    steps:
+      - name: Setup and Install Uplink
+        run: |
+          apt-get update
+          apt-get install -y curl unzip
+          curl -L https://github.com/storj/storj/releases/latest/download/uplink_linux_amd64.zip -o uplink_linux_amd64.zip
+          unzip uplink_linux_amd64.zip
+          install uplink /usr/local/bin/uplink
+      - name: Build Site
+        run: |
+          npm install yarn -g
+          yarn install
+          yarn build
+      - name: Deploy to Uplink
+        run: |
+          uplink --access ${{ secrets.STORJ_ACCESS }} cp -r ./dist sj://${{ secrets.STORJ_BUCKET }}/hack13-site
