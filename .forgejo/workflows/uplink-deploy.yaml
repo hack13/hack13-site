@@ -22,4 +22,5 @@ jobs:
           yarn build
       - name: Deploy to Uplink
         run: |
-          uplink cp --access '${{ secrets.STORJ_ACCESS }}' -r ./dist sj://${{ secrets.STORJ_BUCKET }}/hack13-site
+          uplink --auth-service '${{ secrets.STORJ_ACCESS }}'
+          uplink cp -r ./dist sj://${{ secrets.STORJ_BUCKET }}/hack13-site
