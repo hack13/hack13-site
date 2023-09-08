@@ -22,5 +22,5 @@ jobs:
           yarn build
       - name: Deploy to Uplink
         run: |
-          uplink import -f main ${{ secrets.STORJ_ACCESS }}
+          uplink access import main ${{ secrets.STORJ_ACCESS }}
           uplink cp -r ./dist sj://${{ secrets.STORJ_BUCKET }}/hack13-site
