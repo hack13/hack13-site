@@ -6,13 +6,6 @@ jobs:
       image: catthehacker/ubuntu:act-latest
       options: --privileged
     steps:
-      - name: Setup and Install Uplink
-        run: |
-          apt-get update
-          apt-get install -y curl unzip
-          curl -L https://github.com/storj/storj/releases/latest/download/uplink_linux_amd64.zip -o uplink_linux_amd64.zip
-          unzip uplink_linux_amd64.zip
-          install uplink /usr/local/bin/uplink
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build Site
@@ -20,7 +13,12 @@ jobs:
           npm install yarn -g
           yarn install
           yarn build
-      - name: Login to Uplink
-        run: uplink access import main ${{ secrets.STORJ_ACCESS }} --force --use
-      - name: Deploy Site
-        run: uplink cp -r ./dist sj://${{ secrets.STORJ_BUCKET }}/hack13-site
+      - name: Deploy to Uplink
+        uses: https://github.com/shallwefootball/upload-s3-action@master
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.STORJ_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.STORJ_SECRET_ACCESS_KEY }}
+          ENDPOINT: ${{ secrets.STORJ_ENDPOINT }}
+          AWS_BUCKET: ${{ secrets.STORJ_BUCKET }}
+          SOURCE_DIR: "dist"
+          DEST_DIR: "hack13-site"
