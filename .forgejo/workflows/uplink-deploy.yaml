@@ -20,7 +20,7 @@ jobs:
           npm install yarn -g
           yarn install
           yarn build
-      - name: Deploy to Uplink
-        run: |
-          uplink access import main ${{ secrets.STORJ_ACCESS }}
-          uplink cp -r ./dist sj://${{ secrets.STORJ_BUCKET }}/hack13-site
+      - name: Login to Uplink
+        run: uplink access import main ${{ secrets.STORJ_ACCESS }}
+      - name: Deploy Site
+        run: uplink cp -r ./dist sj://${{ secrets.STORJ_BUCKET }}/hack13-site
