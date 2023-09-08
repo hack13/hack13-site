@@ -15,10 +15,10 @@ jobs:
           yarn build
       - name: Deploy to Uplink
         uses: https://github.com/shallwefootball/upload-s3-action@master
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.STORJ_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.STORJ_SECRET_ACCESS_KEY }}
-          ENDPOINT: ${{ secrets.STORJ_ENDPOINT }}
-          AWS_BUCKET: ${{ secrets.STORJ_BUCKET }}
-          SOURCE_DIR: "dist"
-          DEST_DIR: "hack13-site"
+        with:
+          aws_key_id: ${{ secrets.STORJ_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.STORJ_SECRET_ACCESS_KEY }}
+          endpoint: ${{ secrets.STORJ_ENDPOINT }}
+          aws_bucket: ${{ secrets.STORJ_BUCKET }}
+          source_dir: "dist"
+          destination_dir: "hack13-site"
